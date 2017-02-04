@@ -38,10 +38,10 @@ public class PlaceDescription {
     double latitude;
     double longitude;
 
-    PlaceDescription(String s){
+    PlaceDescription(String jsonStr, String name){
         try{
-            JSONObject jo = new JSONObject(s);
-            name = jo.getString("name");
+            JSONObject jo = new JSONObject(jsonStr);
+            this.name = name;
             description = jo.getString("description");
             category = jo.getString("category");
             addresstitle = jo.getString("addresstitle");
@@ -73,5 +73,53 @@ public class PlaceDescription {
                     "error converting to/from json");
         }
         return ret;
+    }
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name =name;
+    }
+    public String getDescription(){
+        return description;
+    }
+    public void setDescription(String description){
+        this.description =description;
+    }
+    public String getCategory(){
+        return category;
+    }
+    public void setCategory(String category){
+        this.category =category;
+    }
+    public String getAddresstitle(){
+        return addresstitle;
+    }
+    public void setAddresstitle(String addresstitle){
+        this.addresstitle =addresstitle;
+    }
+    public String getAddress(){
+        return address;
+    }
+    public void setAddress(String address){
+        this.address =address;
+    }
+    public double getElevation(){
+        return elevation;
+    }
+    public void setElevation(double elevation){
+        this.elevation =elevation;
+    }
+    public double getLatitude(){
+        return latitude;
+    }
+    public void setLatitude(double latitude){
+        this.latitude =latitude;
+    }
+    public double getLongitude(){
+        return longitude;
+    }
+    public void setLongitude(double longitude){
+        this.longitude =longitude;
     }
 }
