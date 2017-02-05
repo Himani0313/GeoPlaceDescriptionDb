@@ -1,5 +1,6 @@
 package edu.asu.msse.hjshah2.geoplacedescription;
 
+import android.support.v7.app.ActionBar;
 import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,13 +41,19 @@ public class Main2Activity extends AppCompatActivity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected = (String)listView.getItemAtPosition(position);
+                String selected = (String) listView.getItemAtPosition(position);
                 Intent intent = new Intent(Main2Activity.this, MainActivity.class);
-                intent.putExtra("name",selected);
+                intent.putExtra("name", selected);
                 startActivity(intent);
             }
         });
 
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.mainmenu, menu);
+            return true;
+        }
 
     }
 }
