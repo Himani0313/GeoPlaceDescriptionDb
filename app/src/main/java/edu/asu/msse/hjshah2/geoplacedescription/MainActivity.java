@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
         String string1 = "{\"name\":\"ASU-Poly\",\"description\":\"Home of ASU's Software Engineering Programs\",\"category\":\"School\",\"addresstitle\":\"ASU Software Engineering\",\"address\":\"7171 E Sonoran Arroyo Mall\n" +
                 "Peralta Hall 230\n" +
                 "Mesa AZ 85212\",\"elevation\":\"1300.0\",\"latitude\":\"33.306388\",\"longitude\":\"-111.679121\"}\n";
-        PlaceDescriptionObject = new PlaceDescription (string1);
+        String name1 = "ASU-Poly";
+        PlaceDescriptionObject = new PlaceDescription (string1,name1);
         name.setText(PlaceDescriptionObject.name);
         description.setText(PlaceDescriptionObject.description);
         category.setText(PlaceDescriptionObject.category);

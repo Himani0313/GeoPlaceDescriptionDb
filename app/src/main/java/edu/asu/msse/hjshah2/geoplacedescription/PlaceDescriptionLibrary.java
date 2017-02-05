@@ -1,12 +1,15 @@
 package edu.asu.msse.hjshah2.geoplacedescription;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
@@ -21,51 +24,40 @@ import java.util.Map;
  */
 public class PlaceDescriptionLibrary implements Serializable {
     protected Hashtable<String, PlaceDescription> places;
-    private static PlaceDescriptionLibrary instance;
-    private static final boolean debugOn = true;
-
-    private PlaceDescriptionLibrary() {
+    public ArrayList<String> str = new ArrayList<String>();
+    Resources resources;
+    public PlaceDescriptionLibrary(Context appContext) {
         places = new Hashtable<String, PlaceDescription>();
+
     }
 
-    public synchronized static PlaceDescriptionLibrary initInstance(Context appContext) {
-        if(instance == null) {
-            instance = new PlaceDescriptionLibrary();
-            instance.loadPlaces(appContext);
-        }
-        return instance;
-    }
 
-    public static PlaceDescriptionLibrary getInstance() {
-        return instance;
-    }
-
-    private void debug(String msg) {
-        if(debugOn)
-            Log.d(this.getClass().getSimpleName(), msg);
-    }
-
-    public void loadPlaces(Context appContext) {
-        try {
-            places.clear();
-            String fileName = "places.json";
-            InputStream is = appContext.getResources().openRawResource(R.raw.places);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    public List<String> loadFromJSON(Context appContext){
+        places = new Hashtable<String, PlaceDescription>();
+        InputStream is = appContext.getResources().openRawResource(R.raw.places);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        try{
             JSONObject placesJSON = new JSONObject(new JSONTokener(br.readLine()));
             Iterator<String> it = placesJSON.keys();
             while(it.hasNext()) {
                 String pTitle = it.next();
                 JSONObject aPlace = placesJSON.optJSONObject(pTitle);
-                debug("importing place description titled " + pTitle + " json is " +aPlace.toString());
+
                 if(aPlace != null) {
                     PlaceDescription md = new PlaceDescription(aPlace.toString(), pTitle);
                     places.put(pTitle, md);
+                    str.add(pTitle);
                 }
             }
-        } catch(Exception e) {
-            Log.d(this.getClass().getSimpleName(), "Exception while loading places " + e.getMessage());
         }
+        catch(Exception e){
+            e.getStackTrace();
+        }
+        return str;
     }
+
+
+
     public PlaceDescription getPlaceDescription(String pTitle) {
         return places.get(pTitle);
     }
