@@ -38,7 +38,7 @@ public class PlaceDescriptionLibrary implements Serializable {
                 JSONObject aPlace = placesJSON.optJSONObject(pTitle);
 
                 if(aPlace != null) {
-                    PlaceDescription md = new PlaceDescription(aPlace.toString(), pTitle);
+                    PlaceDescription md = new PlaceDescription(aPlace, pTitle);
                     places.put(pTitle, md);
                 }
             }
@@ -62,7 +62,7 @@ public class PlaceDescriptionLibrary implements Serializable {
                 JSONObject aPlace = placesJSON.optJSONObject(pTitle);
 
                 if(aPlace != null) {
-                    PlaceDescription md = new PlaceDescription(aPlace.toString(), pTitle);
+                    PlaceDescription md = new PlaceDescription(aPlace, pTitle);
                     places.put(pTitle, md);
                     str.add(pTitle);
                 }

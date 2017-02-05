@@ -40,14 +40,14 @@ public class PlaceDescription {
     PlaceDescription(){
 
     }
-    PlaceDescription(String jsonStr, String name){
+    PlaceDescription(JSONObject jo, String name){
         try{
-            JSONObject jo = new JSONObject(jsonStr);
+            //JSONObject jo = new JSONObject(jsonStr);
             this.name = name;
-            description = jo.getString("description");
-            category = jo.getString("category");
-            addresstitle = jo.getString("addresstitle");
-            address = jo.getString("address");
+            description = jo.optString("description");
+            category = jo.optString("category");
+            addresstitle = jo.optString("address-title");
+            address = jo.optString("address-street");
             elevation = jo.getDouble("elevation");
             latitude = jo.getDouble("latitude");
             longitude = jo.getDouble("longitude");
