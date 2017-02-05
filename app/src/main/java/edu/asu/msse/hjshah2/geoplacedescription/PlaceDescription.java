@@ -37,7 +37,9 @@ public class PlaceDescription {
     double elevation;
     double latitude;
     double longitude;
+    PlaceDescription(){
 
+    }
     PlaceDescription(String jsonStr, String name){
         try{
             JSONObject jo = new JSONObject(jsonStr);

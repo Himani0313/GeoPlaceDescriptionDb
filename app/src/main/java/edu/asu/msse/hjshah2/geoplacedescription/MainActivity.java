@@ -44,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
         elevation = (EditText)findViewById(R.id.displayElevation);
         latitude = (EditText)findViewById(R.id.displayLatitude);
         longitude = (EditText)findViewById(R.id.displayLongitude);
-        String string1 = "{\"name\":\"ASU-Poly\",\"description\":\"Home of ASU's Software Engineering Programs\",\"category\":\"School\",\"addresstitle\":\"ASU Software Engineering\",\"address\":\"7171 E Sonoran Arroyo Mall\n" +
-                "Peralta Hall 230\n" +
-                "Mesa AZ 85212\",\"elevation\":\"1300.0\",\"latitude\":\"33.306388\",\"longitude\":\"-111.679121\"}\n";
-        String name1 = "ASU-Poly";
-        PlaceDescriptionObject = new PlaceDescription (string1,name1);
+        Bundle bundle = getIntent().getExtras();
+        String name1 = bundle.getString("name");
+        name.setText(name1);
+        PlaceDescriptionLibrary pdl = new PlaceDescriptionLibrary(this);
+
+        PlaceDescriptionObject = new PlaceDescription ();
+        PlaceDescriptionObject = pdl.getPlaceDescription(name1);
         name.setText(PlaceDescriptionObject.name);
         description.setText(PlaceDescriptionObject.description);
         category.setText(PlaceDescriptionObject.category);
