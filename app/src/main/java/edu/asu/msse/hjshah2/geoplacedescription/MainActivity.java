@@ -1,7 +1,10 @@
 package edu.asu.msse.hjshah2.geoplacedescription;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 /*
  * Copyright 2017 Himani Shah,
@@ -32,8 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
     EditText name, description, category, adddresstitle, address, elevation, latitude, longitude;
     PlaceDescription PlaceDescriptionObject;
+    public String selectedPlace;
+    public PlaceDescriptionLibrary pdl;
+    public  String itemname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        pdl = new PlaceDescriptionLibrary(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         name = (EditText)findViewById(R.id.displayName);
@@ -44,13 +51,14 @@ public class MainActivity extends AppCompatActivity {
         elevation = (EditText)findViewById(R.id.displayElevation);
         latitude = (EditText)findViewById(R.id.displayLatitude);
         longitude = (EditText)findViewById(R.id.displayLongitude);
-        Bundle bundle = getIntent().getExtras();
-        String name1 = bundle.getString("name");
-        name.setText(name1);
-        PlaceDescriptionLibrary pdl = new PlaceDescriptionLibrary(this);
+        Intent intent = getIntent();
+        pdl = intent.getSerializableExtra("places")!=null ? (PlaceDescriptionLibrary) intent.getSerializableExtra("places") :
+                new PlaceDescriptionLibrary(this);
+        selectedPlace = intent.getStringExtra("name")!=null ? intent.getStringExtra("name") : "unknown";
+
 
         PlaceDescriptionObject = new PlaceDescription ();
-        PlaceDescriptionObject = pdl.getPlaceDescription(name1);
+        PlaceDescriptionObject = pdl.getPlaceDescription(selectedPlace);
         name.setText(PlaceDescriptionObject.name);
         description.setText(PlaceDescriptionObject.description);
         category.setText(PlaceDescriptionObject.category);
@@ -61,5 +69,26 @@ public class MainActivity extends AppCompatActivity {
         longitude.setText(String.valueOf(PlaceDescriptionObject.longitude));
 
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_2, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        android.util.Log.d(this.getClass().getSimpleName(), "called onOptionsItemSelected()");
+        switch (item.getItemId()) {
+            case R.id.back:
+                Intent i = new Intent();
+                i.putExtra("myresult", itemname);
+                this.setResult(RESULT_OK,i);
+                finish();
+                return true;
+            case R.id.delete:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

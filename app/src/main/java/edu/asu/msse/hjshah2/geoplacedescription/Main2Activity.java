@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBar;
 import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,16 +45,25 @@ public class Main2Activity extends AppCompatActivity {
                 String selected = (String) listView.getItemAtPosition(position);
                 Intent intent = new Intent(Main2Activity.this, MainActivity.class);
                 intent.putExtra("name", selected);
-                startActivity(intent);
+                intent.putExtra("places",placeLib);
+                startActivityForResult(intent,1);
             }
         });
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.mainmenu, menu);
-            return true;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String itemname = data.getStringExtra("myresult");
+                android.util.Log.d(this.getClass().getSimpleName(), "Returned list item name: " + itemname);
+            }
         }
-
     }
 }

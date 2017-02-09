@@ -3,16 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <item
-            android:id="@+id/action_refresh"
-            app:showAsAction="always"
-            android:icon="@drawable/ic_action_name"
-            android:title="Refresh"/>
-        <item
-            android:id="@+id/action_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings"
-            app:showAsAction="always">
-        </item>
+            android:id="@+id/add"
+            android:icon="@drawable/ic_add"
+            app:showAsAction="ifRoom"
+            android:title="" />
 
 
 </menu>

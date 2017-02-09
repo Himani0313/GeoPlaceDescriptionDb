@@ -28,7 +28,9 @@ package edu.asu.msse.hjshah2.geoplacedescription;
 
 import org.json.JSONObject;
 
-public class PlaceDescription {
+import java.io.Serializable;
+
+public class PlaceDescription implements Serializable {
     String name;
     String description;
     String category;
