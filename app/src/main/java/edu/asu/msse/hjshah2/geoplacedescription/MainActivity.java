@@ -81,11 +81,16 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.back:
                 Intent i = new Intent();
-                i.putExtra("myresult", itemname);
+                i.putExtra("places", itemname);
                 this.setResult(RESULT_OK,i);
                 finish();
                 return true;
             case R.id.delete:
+                pdl.remove(selectedPlace);
+                Intent intent = new Intent();
+                intent.putExtra("places", pdl);
+                this.setResult(RESULT_OK,intent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

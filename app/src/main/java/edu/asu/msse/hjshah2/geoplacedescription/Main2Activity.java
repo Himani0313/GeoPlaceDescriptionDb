@@ -18,7 +18,7 @@ import android.content.Intent;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2Activity extends AppCompatActivity implements ListView.OnItemClickListener {
     PlaceDescriptionLibrary placeLib;
     ListView listView;
     ArrayList<String> arr ;
@@ -39,16 +39,7 @@ public class Main2Activity extends AppCompatActivity {
         listView.setAdapter(simpleAdapter);
         //listView.setOnClickListener(new){
 
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected = (String) listView.getItemAtPosition(position);
-                Intent intent = new Intent(Main2Activity.this, MainActivity.class);
-                intent.putExtra("name", selected);
-                intent.putExtra("places",placeLib);
-                startActivityForResult(intent,1);
-            }
-        });
+        listView.setOnItemClickListener(this);
 
     }
     @Override
@@ -61,9 +52,24 @@ public class Main2Activity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                String itemname = data.getStringExtra("myresult");
+                String itemname = data.getStringExtra("places");
                 android.util.Log.d(this.getClass().getSimpleName(), "Returned list item name: " + itemname);
+
+                placeLib = data.getSerializableExtra("places")!=null ? (PlaceDescriptionLibrary) data.getSerializableExtra("place_delete") : new PlaceDescriptionLibrary(this);
+                arr = (ArrayList<String>) placeLib.getTitles(this);
+                ArrayAdapter<String> simpleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
+                listView.setAdapter(simpleAdapter);
+                listView.setOnItemClickListener(this);
             }
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        String selected = (String) listView.getItemAtPosition(i);
+        Intent intq = new Intent(Main2Activity.this, MainActivity.class);
+        intq.putExtra("places",placeLib);
+        intq.putExtra("name", selected);
+        startActivityForResult(intq,1);
     }
 }

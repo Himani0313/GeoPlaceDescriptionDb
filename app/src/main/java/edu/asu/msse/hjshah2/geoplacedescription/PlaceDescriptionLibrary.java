@@ -74,8 +74,21 @@ public class PlaceDescriptionLibrary implements Serializable {
         return str;
     }
 
+    public List<String> getTitles (Context appContext){
+        Iterator<Map.Entry<String, PlaceDescription>> it = places.entrySet().iterator();
+        List<String> retstr = new ArrayList<String>();
 
+        while(it.hasNext()) {
+            Map.Entry<String,PlaceDescription> entry = it.next();
+            retstr.add(entry.getKey());
+        }
+        return retstr;
+    }
 
+    public boolean remove(String aName) {
+        //debug("removing student named: " + aName);
+        return ((places.remove(aName) == null) ? false : true);
+    }
     public PlaceDescription getPlaceDescription(String pTitle) {
         return places.get(pTitle);
     }
