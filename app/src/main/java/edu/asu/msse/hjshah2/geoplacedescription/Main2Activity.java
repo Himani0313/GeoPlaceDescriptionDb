@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -55,13 +56,22 @@ public class Main2Activity extends AppCompatActivity implements ListView.OnItemC
                 String itemname = data.getStringExtra("places");
                 android.util.Log.d(this.getClass().getSimpleName(), "Returned list item name: " + itemname);
 
-                placeLib = data.getSerializableExtra("places")!=null ? (PlaceDescriptionLibrary) data.getSerializableExtra("place_delete") : new PlaceDescriptionLibrary(this);
+                placeLib = data.getSerializableExtra("places")!=null ? (PlaceDescriptionLibrary) data.getSerializableExtra("places") : new PlaceDescriptionLibrary(this);
                 arr = (ArrayList<String>) placeLib.getTitles(this);
                 ArrayAdapter<String> simpleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
                 listView.setAdapter(simpleAdapter);
                 listView.setOnItemClickListener(this);
             }
         }
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if ( item.getItemId() == R.id.add){
+            Intent intent = new Intent(Main2Activity.this,add_activity.class);
+            intent.putExtra("places", placeLib);
+            this.startActivityForResult(intent,1);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -72,4 +82,5 @@ public class Main2Activity extends AppCompatActivity implements ListView.OnItemC
         intq.putExtra("name", selected);
         startActivityForResult(intq,1);
     }
+
 }

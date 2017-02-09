@@ -89,6 +89,10 @@ public class PlaceDescriptionLibrary implements Serializable {
         //debug("removing student named: " + aName);
         return ((places.remove(aName) == null) ? false : true);
     }
+
+    public void add(String placeTitle, PlaceDescription placeDescriptionObject){
+        places.put(placeTitle,placeDescriptionObject);
+    }
     public PlaceDescription getPlaceDescription(String pTitle) {
         return places.get(pTitle);
     }
