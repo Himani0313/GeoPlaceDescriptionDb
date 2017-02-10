@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.acos;
+import static java.lang.Math.atan;
+import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -46,7 +48,7 @@ import static java.lang.Math.sin;
  */
 public class MainActivity extends AppCompatActivity {
 
-    EditText name, description, category, adddresstitle, address, elevation, latitude, longitude,distance_edit;
+    EditText name, description, category, adddresstitle, address, elevation, latitude, longitude,distance_edit, bearing;
     Button updatebtn;
     PlaceDescription PlaceDescriptionObject, placeDescriptionObject2;
     public String selectedPlace, seletedPlace2;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         longitude = (EditText)findViewById(R.id.displayLongitude);
         spinner = (Spinner)findViewById(R.id.spinner);
         distance_edit = (EditText)findViewById(R.id.distance_editText);
+        bearing = (EditText)findViewById(R.id.bearing_editText);
         Intent intent = getIntent();
         pdl = intent.getSerializableExtra("places")!=null ? (PlaceDescriptionLibrary) intent.getSerializableExtra("places") :
                 new PlaceDescriptionLibrary(this);
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 seletedPlace2 = spinner.getSelectedItem().toString();
                 placeDescriptionObject2 = pdl.getPlaceDescription(seletedPlace2);
                 calculate_distance();
+                calculate_bearing();
             }
 
             @Override
@@ -168,5 +172,15 @@ public class MainActivity extends AppCompatActivity {
         distance_edit.setText(""+distance);
 
     }
+    public void calculate_bearing(){
+        double lat1, lat2, long1, long2;
+        double bearing_cal;
+        lat1 = PlaceDescriptionObject.latitude;
+        lat2 = placeDescriptionObject2.latitude;
+        long1 = PlaceDescriptionObject.longitude;
+        long2 = placeDescriptionObject2.longitude;
 
+        bearing_cal = atan2(cos(lat1)*sin(lat2)-sin(lat1)*cos(lat2)*cos(long2-long1),sin(long2-long1)*cos(lat2) );
+        bearing.setText(""+bearing_cal);
+    }
 }
