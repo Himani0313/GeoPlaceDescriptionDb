@@ -93,6 +93,9 @@ public class PlaceDescriptionLibrary implements Serializable {
     public void add(String placeTitle, PlaceDescription placeDescriptionObject){
         places.put(placeTitle,placeDescriptionObject);
     }
+    public void update(String placeTitle, PlaceDescription placeDescriptionObject){
+        places.put(placeTitle, placeDescriptionObject);
+    }
     public PlaceDescription getPlaceDescription(String pTitle) {
         return places.get(pTitle);
     }
