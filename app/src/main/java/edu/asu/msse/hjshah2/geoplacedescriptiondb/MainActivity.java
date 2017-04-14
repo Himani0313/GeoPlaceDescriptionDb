@@ -1,4 +1,4 @@
-package edu.asu.msse.hjshah2.geoplacedescription;
+package edu.asu.msse.hjshah2.geoplacedescriptiondb;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -38,8 +38,7 @@ import static java.lang.Math.sin;
  *
  * instuctor and the University with the right to build and evaluate the software package for the purpose of determining your grade and program assessment
  *
- * Purpose: Example of single view application
- * Allows to display the objects of a class to access the GUI
+ * Purpose: Multiple view Android app for managing PlaceDescriptions.
  *
  * Ser423 Mobile Applications
  * @author Himani Shah Himani.shah@asu.edu

@@ -1,4 +1,4 @@
-package edu.asu.msse.hjshah2.geoplacedescription;
+package edu.asu.msse.hjshah2.geoplacedescriptiondb;
 
 import org.junit.Test;
 
