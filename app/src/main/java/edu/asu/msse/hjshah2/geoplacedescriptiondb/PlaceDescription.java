@@ -40,41 +40,15 @@ public class PlaceDescription implements Serializable {
     PlaceDescription(){
 
     }
-    PlaceDescription(JSONObject jo, String name){
-        try{
-            //JSONObject jo = new JSONObject(jsonStr);
-            this.name = name;
-            description = jo.optString("description");
-            category = jo.optString("category");
-            addresstitle = jo.optString("address-title");
-            address = jo.optString("address-street");
-            elevation = jo.getDouble("elevation");
-            latitude = jo.getDouble("latitude");
-            longitude = jo.getDouble("longitude");
-        }catch (Exception ex){
-            android.util.Log.w(this.getClass().getSimpleName(),
-                    "error converting to/from json");
-        }
-
-    }
-    public String toJsonString(){
-        String ret = "";
-        try{
-            JSONObject jo = new JSONObject();
-            jo.put("name",name);
-            jo.put("description",description);
-            jo.put("category",category);
-            jo.put("addresstitle",addresstitle);
-            jo.put("address",address);
-            jo.put("elevation",elevation);
-            jo.put("latitude", latitude);
-            jo.put("longitude", longitude);
-
-        }catch (Exception ex){
-            android.util.Log.w(this.getClass().getSimpleName(),
-                    "error converting to/from json");
-        }
-        return ret;
+    public PlaceDescription(String name, String description, String category, String addTitle, String addStreet, double elevation, double latitude, double longitude){
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.addresstitle = addTitle;
+        this.address = addStreet;
+        this.elevation = elevation;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
     public String getName(){
         return name;

@@ -1,23 +1,12 @@
 package edu.asu.msse.hjshah2.geoplacedescriptiondb;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.util.Log;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /*
  * Copyright 2017 Himani Shah,
@@ -44,81 +33,88 @@ import java.util.Map;
  * @version January 2017
  */
 public class PlaceDescriptionLibrary implements Serializable {
-    protected Hashtable<String, PlaceDescription> places;
-    public ArrayList<String> str = new ArrayList<String>();
-    Resources resources;
-    public PlaceDescriptionLibrary(Context appContext) {
-        places = new Hashtable<String, PlaceDescription>();
-        InputStream is = appContext.getResources().openRawResource(R.raw.places);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        try{
-            JSONObject placesJSON = new JSONObject(new JSONTokener(br.readLine()));
-            Iterator<String> it = placesJSON.keys();
-            while(it.hasNext()) {
-                String pTitle = it.next();
-                JSONObject aPlace = placesJSON.optJSONObject(pTitle);
-
-                if(aPlace != null) {
-                    PlaceDescription md = new PlaceDescription(aPlace, pTitle);
-                    places.put(pTitle, md);
-                }
+    int count;
+    public PlaceDescriptionLibrary(Context appContext){
+        count = 15;
+    }
+    public PlaceDescription getPlaceDescription(Context context,String placeTitle){
+        PlaceDescription pd = null;
+        try {
+            placeDB db = new placeDB(context);
+            SQLiteDatabase crsDB = db.openDB();
+            Cursor cur = crsDB.rawQuery("select * from places where name=? ;",
+                    new String[]{placeTitle});
+            cur.moveToNext();
+            pd = new PlaceDescription(cur.getString(1),cur.getString(2),cur.getString(3),cur.getString(4),cur.getString(5),cur.getDouble(6),cur.getDouble(7),cur.getDouble(8));
+        }catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),"Exception getting place info: "+
+                    ex.getMessage());
+        }
+        return pd;
+    }
+    public List<String> getTitles(Context context) {
+        ArrayList<String> names = new ArrayList<String>();
+        try {
+            placeDB db = new placeDB(context);
+            SQLiteDatabase crsDB = db.openDB();
+            Cursor cur = crsDB.rawQuery("select * from PLACES;",null);
+            while(cur.moveToNext()){
+                names.add(cur.getString(1));
             }
         }
-        catch(Exception e){
-            e.getStackTrace();
+        catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),"Exception getting place info: "+
+                    ex.getMessage());
         }
-
+        return names;
     }
 
 
-    public List<String> loadFromJSON(Context appContext){
-        places = new Hashtable<String, PlaceDescription>();
-        InputStream is = appContext.getResources().openRawResource(R.raw.places);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        try{
-            JSONObject placesJSON = new JSONObject(new JSONTokener(br.readLine()));
-            Iterator<String> it = placesJSON.keys();
-            while(it.hasNext()) {
-                String pTitle = it.next();
-                JSONObject aPlace = placesJSON.optJSONObject(pTitle);
 
-                if(aPlace != null) {
-                    PlaceDescription md = new PlaceDescription(aPlace, pTitle);
-                    places.put(pTitle, md);
-                    str.add(pTitle);
-                }
-            }
+    public void remove(Context context, String aName) {
+        try {
+            placeDB db = new placeDB(context);
+            SQLiteDatabase crsDB = db.openDB();
+            String delete = "delete from places where name='"+ aName +"';";
+            crsDB.execSQL(delete);
+            crsDB.close();
+            db.close();
         }
-        catch(Exception e){
-            e.getStackTrace();
+        catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),"Exception deleting place info: "+
+                    ex.getMessage());
         }
-        return str;
     }
 
-    public List<String> getTitles (Context appContext){
-        Iterator<Map.Entry<String, PlaceDescription>> it = places.entrySet().iterator();
-        List<String> retstr = new ArrayList<String>();
-
-        while(it.hasNext()) {
-            Map.Entry<String,PlaceDescription> entry = it.next();
-            retstr.add(entry.getKey());
+    public void add(Context context, PlaceDescription placeDescriptionObject){
+        try {
+            count = count + 1;
+            placeDB db = new placeDB(context);
+            SQLiteDatabase crsDB = db.openDB();
+            String insert = "insert into places values (" + count + ",'"+ placeDescriptionObject.name + "','" + placeDescriptionObject.description + "','" + placeDescriptionObject.category + "','" + placeDescriptionObject.addresstitle + "','" + placeDescriptionObject.address + "'," + placeDescriptionObject.elevation + "," + placeDescriptionObject.latitude + "," + placeDescriptionObject.longitude + ");";
+            crsDB.execSQL(insert);
+            crsDB.close();
+            db.close();
         }
-        return retstr;
+        catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),"Exception adding place info: "+
+                    ex.getMessage());
+        }
+    }
+    public void update(Context context, PlaceDescription placeDescriptionObject){
+        try {
+            placeDB db = new placeDB(context);
+            SQLiteDatabase crsDB = db.openDB();
+            String update = "update places set description = '" + placeDescriptionObject.description + "', category = '" + placeDescriptionObject.category + "', addtitle = '" + placeDescriptionObject.addresstitle + "', addstreet = '" + placeDescriptionObject.address + "', elevation = " + placeDescriptionObject.elevation + ", latitude = " + placeDescriptionObject.latitude + ", longitude = " + placeDescriptionObject.longitude + " where name = '" + placeDescriptionObject.name +"';";
+            crsDB.execSQL(update);
+            crsDB.close();
+            db.close();
+        }
+        catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),"Exception editing place info: "+
+                    ex.getMessage());
+        }
     }
 
-    public boolean remove(String aName) {
-        //debug("removing student named: " + aName);
-        return ((places.remove(aName) == null) ? false : true);
-    }
-
-    public void add(String placeTitle, PlaceDescription placeDescriptionObject){
-        places.put(placeTitle,placeDescriptionObject);
-    }
-    public void update(String placeTitle, PlaceDescription placeDescriptionObject){
-        places.put(placeTitle, placeDescriptionObject);
-    }
-    public PlaceDescription getPlaceDescription(String pTitle) {
-        return places.get(pTitle);
-    }
 
 }

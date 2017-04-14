@@ -47,9 +47,6 @@ public class Main2Activity extends AppCompatActivity implements ListView.OnItemC
     ListView listView;
     ArrayList<String> arr ;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
