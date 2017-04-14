@@ -68,7 +68,7 @@ public class add_activity extends AppCompatActivity {
                 placeDescription.setLatitude(Double.parseDouble(latitude.getText().toString().trim()));
                 placeDescription.setLongitude(Double.parseDouble(longitude.getText().toString().trim()));
 
-                pdl.add(title,placeDescription);
+                pdl.add(add_activity.this,placeDescription);
 
                 Intent i = new Intent();
                 i.putExtra("places", pdl);

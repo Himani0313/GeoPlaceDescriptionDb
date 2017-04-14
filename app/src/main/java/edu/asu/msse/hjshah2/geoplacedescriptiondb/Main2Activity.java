@@ -54,7 +54,7 @@ public class Main2Activity extends AppCompatActivity implements ListView.OnItemC
         listView = (ListView) findViewById(R.id.listView);
 
         placeLib = new PlaceDescriptionLibrary(this);
-        arr = (ArrayList<String>) placeLib.loadFromJSON(this);
+        arr = (ArrayList<String>) placeLib.getTitles(this);
 
         ArrayAdapter<String> simpleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
         listView.setAdapter(simpleAdapter);
