@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         PlaceDescriptionObject = new PlaceDescription ();
-        PlaceDescriptionObject = pdl.getPlaceDescription(selectedPlace);
+        PlaceDescriptionObject = pdl.getPlaceDescription(this, selectedPlace);
         name.setText(PlaceDescriptionObject.name);
         description.setText(PlaceDescriptionObject.description);
         category.setText(PlaceDescriptionObject.category);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 PlaceDescriptionObject.setLatitude(Double.parseDouble(latitude.getText().toString().trim()));
                 PlaceDescriptionObject.setLongitude(Double.parseDouble(longitude.getText().toString().trim()));
 
-                pdl.update(selectedPlace,PlaceDescriptionObject);
+                pdl.update(MainActivity.this,PlaceDescriptionObject);
                 Intent i = new Intent();
                 i.putExtra("places", pdl);
                 setResult(RESULT_OK,i);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 seletedPlace2 = spinner.getSelectedItem().toString();
-                placeDescriptionObject2 = pdl.getPlaceDescription(seletedPlace2);
+                placeDescriptionObject2 = pdl.getPlaceDescription(MainActivity.this,seletedPlace2);
                 calculate_distance();
                 calculate_bearing();
             }
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.delete:
-                pdl.remove(selectedPlace);
+                pdl.remove(MainActivity.this,selectedPlace);
                 Intent intent = new Intent();
                 intent.putExtra("places", pdl);
                 this.setResult(RESULT_OK, intent);
